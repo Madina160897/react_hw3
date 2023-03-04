@@ -5,11 +5,11 @@ interface ISearchInputProps {
   onSearch: (value: string) => void
 }
 
-export default class InputTodo extends Component <ISearchInputProps> {
+export default class InputShop extends Component <ISearchInputProps> {
 
   render() {
     return (
-      <div>
+      <div style={{textAlign: 'center'}}>
         <input value={this.props.search}
         onChange={(e) => this.props.onSearch( e.target.value)}/>
       </div>

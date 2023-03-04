@@ -1,4 +1,4 @@
-export { default as TodoList } from "./TodoList/TodoList"
+export { default as ShopList } from "./ShopList/ShopList"
 export { default as Header } from "./Header/Header"
-// export { default as SearchInput } from "./SearchInput/InputTodo"
-// export { default as AddInput } from "./AddInput/AddInput"
+export { default as SearchInput } from "./SearchInput/InputShop"
+export { default as AddInput } from "./AddInput/AddInput"

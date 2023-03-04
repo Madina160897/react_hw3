@@ -1,6 +1,8 @@
-export interface ITodo{
+export interface IShop{
     id: number;
-    text: string;
-    done: boolean;
-    important: boolean;
+    nameShop: string, 
+    openingTime: string, 
+    closingTime: string, 
+    remoteness: number, 
+    special: string,
 }

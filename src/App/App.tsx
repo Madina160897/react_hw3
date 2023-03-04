@@ -1,102 +1,76 @@
 import React, { Component } from 'react';
-import { TodoList, Header } from "../component"
-import { ITodo } from "../types"
-import Input from '../component/SearchInput/InputTodo'
-import AddInput from '../component/AddInput/AddInput'
+import { ShopList, Header, SearchInput, AddInput } from "../component"
+import { IShop } from "../types"
+import '../style.css'
 
 interface IAppState {
-  todos: ITodo[],
-  searchText: string
+    shops: IShop[],
+    searchText: string
 }
-
-
 
 export default class App extends Component<{}, IAppState> {
 
-  state = {
-    todos: [
-      { id: 1, text: "learn react", done: false, important: false },
-      { id: 2, text: "Drink Coffee", done: false, important: false },
-      { id: 3, text: "Drink Soda", done: false, important: false }
-    ],
-    searchText: ''
-  }
+    state = {
+        shops: [
+            { id: 1, nameShop: "New Yorker", openingTime: "10:00", closingTime: "22:00", remoteness: 100, special: "Не особенный" },
+            { id: 2, nameShop: "Timberland", openingTime: "09:00", closingTime: "21:00", remoteness: 500, special: "Особенный" },
+            { id: 3, nameShop: "Miniso", openingTime: "10:00", closingTime: "23:00", remoteness: 350, special: "Особенный" },
+            { id: 4, nameShop: "Tommy Hilfiger", openingTime: "08:00", closingTime: "21:00", remoteness: 454, special: "Не особенный" },
+            { id: 5, nameShop: "Calvin Klein Jeans", openingTime: "08:00", closingTime: "22:00", remoteness: 252, special: "Особенный" },
+        ],
+        searchText: ''
+    }
 
-  onSearch = (value:string) => {
-    this.setState ({searchText: value})
-  }
+    onSearch = (value: string) => {
+        this.setState({ searchText: value })
+    }
 
-  onChangeStateTodos = (id:number, field: string) => {
-    console.log({id});
-    
-    this.setState((state) => {
-      const todoIdx = this.state.todos.findIndex(item => item.id === id)
-      const newTodo = {
-        ...state.todos[todoIdx],
-        //@ts-ignore
-        [field]: !state.todos[todoIdx][field]
-      }
+    handleDelete = (id: number) => {
+        console.log({ id });
 
-      const before = state.todos.slice(0, todoIdx)
-      const after = state.todos.slice(todoIdx + 1)
+        this.setState((state) => {
+            const shopsIdx = this.state.shops.findIndex(item => item.id === id)
+            const before = state.shops.slice(0, shopsIdx)
+            const after = state.shops.slice(shopsIdx + 1)
 
-      return {
-        todos: [...before, newTodo, ...after]
-      }
+            return {
+                shops: [...before, ...after]
+            }
+        })
+    }
 
-    })
-  }
+    onAddTask = (nameShop: string, openingTime: string, closingTime: string, remoteness: number, special: string) => {
+        this.setState((state) => {
+            const newShop: IShop = {
+                id: Math.random(),
+                nameShop: nameShop,
+                openingTime: openingTime,
+                closingTime: closingTime,
+                remoteness: remoteness,
+                special: special
+            }
+            return {
+                shops: [...state.shops, newShop]
+            }
+        })
+    }
 
-  handleDelete = (id:number) => {
-    console.log({id});
-
-    this.setState((state) => {
-      const todoIdx = this.state.todos.findIndex(item => item.id === id)
-      const before = state.todos.slice(0, todoIdx)
-      const after = state.todos.slice(todoIdx + 1)
-
-      return {
-        todos: [...before, ...after]
-      }
-      // const todoDeleteIdx = this.state.todos.filter(item => item.id !== id)
-      // return {
-      //   todos: todoDeleteIdx
-      // }    
-    })
-
-
-  }
-
-  onAddTask = (text:string) => {
-    this.setState((state) => {
-      const newTode: ITodo = {
-        id:Math.random(),
-        text: text,
-        done: false,
-        important: false
-      }
-      return {
-        todos: [...state.todos, newTode]
-      }
-    })
-  }
-
-  render() {
-    const {searchText, todos } = this.state
-    const filteredTodos = todos.filter(todo => todo.text.toLowerCase().includes(searchText.toLowerCase()))
-    return (
-      <div>
-        <Header title="Todo App" />
-        <AddInput onAdd={this.onAddTask}/>
-        <Input search={this.state.searchText}
-        onSearch={this.onSearch}/>
-        <TodoList 
-        todos={filteredTodos} 
-        onDone={(id) => this.onChangeStateTodos(id, 'done')} 
-        onImportent={(id) => this.onChangeStateTodos(id, 'important')} 
-        onDelete={ this.handleDelete} 
-        />
-      </div>
-    )
-  }
+    render() {
+        const { searchText, shops } = this.state
+        const filteredTodos = shops.filter(todo => todo.nameShop.toLowerCase().includes(searchText.toLowerCase()))
+        return (
+            <div>
+                <Header title="Список магазин" />
+                <div className='input'>
+                    <AddInput onAdd={this.onAddTask} />
+                    <SearchInput search={this.state.searchText}
+                        onSearch={this.onSearch} />
+                </div>
+                <ShopList
+                    shops={filteredTodos}
+                    onDelete={this.handleDelete}
+                />
+            </div>
+        )
+    }
 };
